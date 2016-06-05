@@ -1,3 +1,4 @@
+#!/bos/usr0/zhuyund/bin/python2.7
 import argparse
 import json
 import twokenizer
@@ -18,6 +19,8 @@ def clean_text(json_objs):
     text = list(json_objs["text"])
     entities = json_objs["entities"]
     for name, arr in entities.items():
+        if name == "user_mentions":
+            continue
         for entity in arr:
             if "indices" in entity:
                 start, end = entity["indices"]
@@ -47,7 +50,10 @@ def parse_tweet_json(tweet_line):
     :param tweet_line: a line of json text
     :return: a tweet obj
     """
-    objs = json.loads(tweet_line)
+    try:
+        objs = json.loads(tweet_line)
+    except:
+        return None
     if "created_at" not in objs:  # other actions such as deleting
         return None
 
@@ -61,7 +67,7 @@ def parse_tweet_json(tweet_line):
     tweet = Tweet()
     tweet.extid = objs["id"]
     tweet.text = clean_text(objs).encode("ascii", "ignore").strip().replace('\n', ' ').replace('\t', ' ')
-    tweet.hashtag = get_hashtags(objs)
+    tweet.hashtag = get_hashtags(objs).encode("ascii", "ignore").strip()
     if tweet.text or tweet.hashtag:
         return tweet
     else:
