@@ -19,15 +19,14 @@ if __name__ == '__main__':
     txt_file_paths = [f for f in listdir(args.tweets_txt_dir) if isfile(join(args.tweets_txt_dir, f))]
     vocab = {}
     for p in txt_file_paths:
-        with open(join(args.tweets_txt_dir, f)) as f:
+        with open(join(args.tweets_txt_dir, p)) as f:
             for line in f:
                 extid, txt = line.split('\t')
                 txt.replace('\'', ' ')
                 tokens = twokenizer.tokenize(txt)
                 for token in tokens:
                     token = token.strip()
-                    if token in stopwords:
-                        continue
+
                     if '@' not in token and not token.isalnum():
                         continue
                     if token == "@":
@@ -36,6 +35,8 @@ if __name__ == '__main__':
                         continue
                     if '@' not in token:
                         token = token.lower()
+                    if token in stopwords:
+                        continue
                     if token in vocab:
                         vocab[token] += 1
                     else:
