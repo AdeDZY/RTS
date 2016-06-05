@@ -19,7 +19,7 @@ if __name__ == '__main__':
     txt_file_paths = [f for f in listdir(args.tweets_txt_dir) if isfile(join(args.tweets_txt_dir, f))]
     vocab = {}
     for p in txt_file_paths:
-        with open(join(args.tweets_txt_dir, f)) as f:
+        with open(join(args.tweets_txt_dir, p)) as f:
             for line in f:
                 extid, txt = line.split('\t')
                 txt.replace('\'', ' ')
