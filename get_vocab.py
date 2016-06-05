@@ -1,3 +1,4 @@
+#!/bos/usr0/zhuyund/bin/python2.7
 import argparse
 import twokenizer
 import emoticons
