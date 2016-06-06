@@ -7,7 +7,6 @@ from os.path import isfile, join
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("tweets_shardmap_dir")
-    #parser.add_argument("test_tag_file", type=argparse.FileType('r'))
     parser.add_argument("tag_extid_dir")
     parser.add_argument("n_shard", type=int)
     parser.add_argument("n_test_tags", type=int)
@@ -31,13 +30,16 @@ if __name__ == '__main__':
     query_shard = [[0 for i in range(args.n_shard)] for j in range(args.n_test_tags)]
     shardmap_file_paths = [f for f in listdir(args.tweets_shardmap_dir) if isfile(args.tweets_shardmap_dir, f) and f.isdigit()]
     for p in shardmap_file_paths:
+        shard_extids = set()
         shardid = int(p) - 1
         with open(join(args.tweets_shardmap_dir, p)) as f:
             for line in f:
                 extid = int(line)
-                for tid in range(args.n_test_tags):
-                    if extid in tag_extids[tid]:
-                        query_shard[tid][shardid] += 1
+                shard_extids.add(extid)
+        for tid in range(args.n_test_tags):
+            for extid in tag_extids[tid]:
+                if extid in shard_extids:
+                    query_shard[tid][shardid] += 1
 
     # compute coverage
     avg_coverage = [0 for i in range(args.n_shard)]
