@@ -17,7 +17,7 @@ if __name__ == '__main__':
     for p in tag_file_paths:
         with open(join(args.tweets_hashtag_dir, p)) as f:
             for line in f:
-                items = line.split('\t')
+                items = line.strip().split('\t')
                 for tag in items[1:]:
                     if tag in vocab:
                         vocab[tag] += 1

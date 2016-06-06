@@ -8,7 +8,7 @@ if __name__ == '__main__':
     parser.add_argument("txtvector_file_dir")
     parser.add_argument("hashtag_dir")
     parser.add_argument("output_dir")
-    parser.add_argument("hashtag_vocab_file", type=argparse.ArgumentParser('r'))
+    parser.add_argument("hashtag_vocab_file", type=argparse.FileType('r'))
     parser.add_argument("txt_vocab_max", type=int)
     args = parser.parse_args()
 
@@ -38,23 +38,25 @@ if __name__ == '__main__':
                     if tag in hash_vocab:
                         hlen += 1
                         tagid = hash_vocab[tag] + args.txt_vocab_max
-                        hs[tagid] = hs.get(tagid + 1)
+                        hs[tagid] = hs.get(tagid, 0) + 1
+                if hlen == 0:
+                    continue
                 hstr = " ".join(["{0}:{1} ".format(k, v) for k, v in hs.items()])
                 extid2hashtags[extid] = (len(hs), hlen, hstr)
 
         with open(join(args.txtvector_file_dir, p)) as vec_f, open(join(args.txtvector_file_dir, p + '.extid')) as extid_f:
-            with open(join(args.output_dir, name), 'w') as out_f:
+            with open(join(args.output_dir, p), 'w') as out_f:
                 for line in vec_f:
                     extid = int(extid_f.readline())
                     if extid not in extid2hashtags:
                         out_f.write(line)
                         continue
                     ntags, hlen, hstr = extid2hashtags[extid]
-                    items = line.split(' ')
+                    items = line.strip().split(' ')
                     nterms = int(items[0]) + ntags
-                    len = int(items[1]) + hlen
-                    vstr = " ".join(items[2])
-                    out_f.write("{0} {1} {2} {3}\n".format(nterms, len, vstr, hstr))
+                    total_len = int(items[1]) + hlen
+                    vstr = " ".join(items[2:])
+                    out_f.write("{0} {1} {2} {3}\n".format(nterms, total_len, vstr, hstr))
 
 
 
