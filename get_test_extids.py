@@ -28,7 +28,6 @@ if __name__ == '__main__':
                         tag2extid[tag].append(extid)
 
     for i in range(len(test_tags)):
-        with open(join(args.output_dir, str(i))) as fout:
+        with open(join(args.output_dir, str(i)), 'w') as fout:
             for extid in tag2extid[test_tags[i]]:
-                fout.write(extid)
-                fout.write('\n')
+                fout.write(str(extid) + '\n')

@@ -57,7 +57,7 @@ cmd += " " + args.seeds + " " + field_types[0] + " "
 cmd += str(args.ref_threshold) + " "
 cmd += " >& " + logFile
 print cmd
-r = random.random() * 60
-time.sleep(int(r))
+#r = random.random() * 60
+#time.sleep(int(r))
 os.system(cmd)
 
