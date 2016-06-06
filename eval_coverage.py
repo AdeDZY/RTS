@@ -29,7 +29,7 @@ if __name__ == '__main__':
     # read the shardmap and count
 
     query_shard = [[0 for i in range(args.n_shard)] for j in range(args.n_test_tags)]
-    shardmap_file_paths = [f for f in listdir(args.tweets_shardmap_dir) if isfile(args.tweets_shardmap_dir, f) and f.isdigit()]
+    shardmap_file_paths = [f for f in listdir(args.tweets_shardmap_dir) if isfile(join(args.tweets_shardmap_dir, f)) and f.isdigit()]
     for p in shardmap_file_paths:
         shardid = int(p) - 1
         with open(join(args.tweets_shardmap_dir, p)) as f:
@@ -38,6 +38,7 @@ if __name__ == '__main__':
                 for tid in range(args.n_test_tags):
                     if extid in tag_extids[tid]:
                         query_shard[tid][shardid] += 1
+                        break
 
     # compute coverage
     avg_coverage = [0 for i in range(args.n_shard)]
