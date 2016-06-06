@@ -8,7 +8,6 @@ if __name__ == '__main__':
     parser.add_argument("tweets_hashtag_dir")
     parser.add_argument("test_tag_file", type=argparse.FileType('r'))
     parser.add_argument("output_dir")
-    parser.add_argument("threshold", type=int)
     args = parser.parse_args()
 
     tag_file_paths = [f for f in listdir(args.tweets_hashtag_dir) if isfile(join(args.tweets_hashtag_dir, f))]
