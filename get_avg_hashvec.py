@@ -1,0 +1,68 @@
+#!/bos/usr0/zhuyund/bin/python2.7
+import argparse
+from os import listdir, makedirs
+from os.path import isfile, join, exists
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("tag_extid_dir")
+    parser.add_argument("tweet_vector_dir")
+    parser.add_argument("n_test_tags", type=int)
+    parser.add_argument("output_dir")
+    args = parser.parse_args()
+
+    # read all the hashtag's related tweet extids
+    tag_extids = [None for i in range(args.n_test_tags)]
+    extid_file_paths = [f for f in listdir(args.tag_extid_dir) if isfile(join(args.tag_extid_dir, f)) and f.isdigit()]
+    for p in extid_file_paths:
+        tid = int(p)
+        with open(join(args.tag_extid_dir, p)) as f:
+            for line in f:
+                extid = int(line)
+                tag_extids[extid] = tid
+
+    # read each vector file and get the vectors
+    extid_file_paths = [f for f in listdir(args.extidDir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' in f]
+    vec_file_paths = [f for f in listdir(args.extidDir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' not in f]
+    avg_vecs = {}
+    n_vecs = {}
+
+    for p in extid_file_paths:
+        name = p.replace('.extid', '')
+        extidFile = open(args.tweet_vector_dir + '/' + p)
+        vecFile = open(args.tweet_vector_dir + '/' + name)
+
+        nLine = 0
+        for line in vecFile:
+            extid = int(extidFile.readline().strip())
+            nLine += 1
+            if extid not in tag_extids:
+                continue
+            tid = tag_extids[extid]
+            items = line.strip().split(' ')
+            if tid not in avg_vecs:
+                avg_vecs[tid] = {}
+                n_vecs[tid] = 0
+
+            for t in items[2:]:
+                wid, freq = t.split(':')
+                wid = int(wid)
+                freq = int(freq)
+                avg_vecs[tid][wid] = avg_vecs[tid].get(wid, 0) + freq
+
+            n_vecs[tid] += 1
+
+    if not exists(args.output_dir):
+        makedirs(args.output_dir)
+    for tid in avg_vecs:
+        fout = open(join(args.output_dir, str(tid)))
+        nvec = n_vecs[tid]
+        for wid, freq in avg_vecs[tid].items():
+            fout.write("{0},{1}\n".format(wid, float(freq)/nvec))
+        fout.close()
+
+
+
+
+
