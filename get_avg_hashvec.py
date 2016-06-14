@@ -13,7 +13,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # read all the hashtag's related tweet extids
-    tag_extids = [None for i in range(args.n_test_tags)]
+    tag_extids = {} 
     extid_file_paths = [f for f in listdir(args.tag_extid_dir) if isfile(join(args.tag_extid_dir, f)) and f.isdigit()]
     for p in extid_file_paths:
         tid = int(p)
@@ -23,8 +23,8 @@ if __name__ == '__main__':
                 tag_extids[extid] = tid
 
     # read each vector file and get the vectors
-    extid_file_paths = [f for f in listdir(args.extidDir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' in f]
-    vec_file_paths = [f for f in listdir(args.extidDir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' not in f]
+    extid_file_paths = [f for f in listdir(args.tweet_vector_dir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' in f]
+    vec_file_paths = [f for f in listdir(args.tweet_vector_dir) if 'extid' not in f]
     avg_vecs = {}
     n_vecs = {}
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     if not exists(args.output_dir):
         makedirs(args.output_dir)
     for tid in avg_vecs:
-        fout = open(join(args.output_dir, str(tid)))
+        fout = open(join(args.output_dir, str(tid)), 'w')
         nvec = n_vecs[tid]
         for wid, freq in avg_vecs[tid].items():
             fout.write("{0},{1}\n".format(wid, float(freq)/nvec))
