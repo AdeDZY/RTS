@@ -43,11 +43,11 @@ if __name__ == '__main__':
                 prob = float(prob)
                 kld += prob * np.log(prob/ref.get(wid))
             tag = tags[int(fname)]
-            res.append((kld, tag, nvec))
+            res.append((kld, tag, nvec, fname))
 
     res = sorted(res, reverse=True)
-    for kld, tag, nvec in res:
-        args.output_file.write('{0}\t{1}\t{2}\n'.format(tag, kld, nvec))
+    for kld, tag, nvec, tid in res:
+        args.output_file.write('{0}\t{1}\t{2}\t{3}\n'.format(tid, tag, kld, nvec))
 
     args.output_file.close()
 
