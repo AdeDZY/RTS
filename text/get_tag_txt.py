@@ -9,8 +9,14 @@ if __name__ == '__main__':
     parser.add_argument("tag_extid_dir")
     parser.add_argument("n_tags", type=int)
     parser.add_argument("tweet_txt_dir")
+    parser.add_argument("tag_txt_file", type=argparse.FileType('r'))
     parser.add_argument("output_dir")
     args = parser.parse_args()
+
+    # read tags
+    tags = []
+    for line in args.tag_txt_file:
+        tags.append(line.strip())
 
     # read all the hashtag's related tweet extids
     tag_extids = {}
@@ -28,6 +34,8 @@ if __name__ == '__main__':
     if not exists(args.output_dir):
         makedirs(args.output_dir)
     fouts = [open(join(args.output_dir, str(t)), 'w') for t in range(args.n_tags)]
+    for i, f in enumerate(fouts):
+        f.write(tags[i] + '\n')
 
     # read each vector file and get the vectors
     txt_file_paths = [f for f in listdir(args.tweet_txt_dir)]
