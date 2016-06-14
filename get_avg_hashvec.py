@@ -20,7 +20,9 @@ if __name__ == '__main__':
         with open(join(args.tag_extid_dir, p)) as f:
             for line in f:
                 extid = int(line)
-                tag_extids[extid] = tid
+                if extid not in tag_extids:
+                    tag_extids[extid] = []
+                tag_extids[extid].append(tid)
 
     # read each vector file and get the vectors
     extid_file_paths = [f for f in listdir(args.tweet_vector_dir) if isfile(join(args.tweet_vector_dir, f)) and 'extid' in f]
@@ -39,19 +41,20 @@ if __name__ == '__main__':
             nLine += 1
             if extid not in tag_extids:
                 continue
-            tid = tag_extids[extid]
+            tids = tag_extids[extid]
             items = line.strip().split(' ')
-            if tid not in avg_vecs:
-                avg_vecs[tid] = {}
-                n_vecs[tid] = 0
+            for tid in tids:
+                if tid not in avg_vecs:
+                    avg_vecs[tid] = {}
+                    n_vecs[tid] = 0
 
-            for t in items[2:]:
-                wid, freq = t.split(':')
-                wid = int(wid)
-                freq = int(freq)
-                avg_vecs[tid][wid] = avg_vecs[tid].get(wid, 0) + freq
+                for t in items[2:]:
+                    wid, freq = t.split(':')
+                    wid = int(wid)
+                    freq = int(freq)
+                    avg_vecs[tid][wid] = avg_vecs[tid].get(wid, 0) + freq
 
-            n_vecs[tid] += 1
+                n_vecs[tid] += 1
 
     if not exists(args.output_dir):
         makedirs(args.output_dir)
