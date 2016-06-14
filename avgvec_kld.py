@@ -35,16 +35,19 @@ if __name__ == '__main__':
         with open(join(args.avgvec_dir, fname)) as f:
             kld = 0
             for line in f:
+                if ',' not in line:
+                    nvec = int(line)
+                    continue
                 wid, prob = line.split(',')
                 wid = int(wid)
                 prob = float(prob)
                 kld += prob * np.log(prob/ref.get(wid))
             tag = tags[int(fname)]
-            res.append((kld, tag))
+            res.append((kld, tag, nvec))
 
     res = sorted(res, reverse=True)
-    for kld, tag in res:
-        args.output_file.write('{0}\t{1}\n'.format(tag, kld))
+    for kld, tag, nvec in res:
+        args.output_file.write('{0}\t{1}\t{2}\n'.format(tag, kld, nvec))
 
     args.output_file.close()
 
