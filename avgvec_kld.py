@@ -39,10 +39,10 @@ if __name__ == '__main__':
                 wid = int(wid)
                 prob = float(prob)
                 kld += prob * np.log(prob/ref.get(wid))
-            tag = tags[int(fname) - 1]
+            tag = tags[int(fname)]
             res.append((kld, tag))
 
-    res = sorted(res)
+    res = sorted(res, reverse=True)
     for kld, tag in res:
         args.output_file.write('{0}\t{1}\n'.format(tag, kld))
 

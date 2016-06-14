@@ -63,6 +63,7 @@ if __name__ == '__main__':
         nvec = n_vecs[tid]
         for wid, freq in avg_vecs[tid].items():
             fout.write("{0},{1}\n".format(wid, float(freq)/nvec))
+        fout.write(str(nvec))
         fout.close()
 
 
