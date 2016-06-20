@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser.add_argument("avgvec_dir")
     parser.add_argument("tag_extid_dir")
     parser.add_argument("tweet_vector_dir")
-    parser.add_argument("output_file")
+    parser.add_argument("output_file", type=argparse.FileType('w'))
     args = parser.parse_args()
 
     # read all the hashtag's related tweet extids
@@ -69,7 +69,7 @@ if __name__ == '__main__':
                     wid = int(wid)
                     prob = float(freq)/nterms
                     kld += prob * np.log(prob/avg_vecs[tid][wid])
-                inner_klds[tid] = inner_klds[tid].get(wid, 0.0) + kld
+                inner_klds[tid] = inner_klds.get(tid, 0.0) + kld
 
     for tid in avg_vecs:
         nvec = n_vecs[tid]

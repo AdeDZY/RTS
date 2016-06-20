@@ -9,10 +9,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("avgvec_dir")
     parser.add_argument("tag_txt_file", type=argparse.FileType('r'))
+    parser.add_argument("inner_kld_file", type=argparse.FileType('r'))
     parser.add_argument("ref_file", type=argparse.FileType('r'))
     parser.add_argument("output_file", type=argparse.FileType('w'))
     args = parser.parse_args()
 
+    # read inner kld
+    inner_klds = {}
+    for line in args.inner_kld_file:
+         tid, ikld = line.split('\t')
+         inner_klds[int(tid)] = float(ikld)
     # read tags
     tags = []
     for line in args.tag_txt_file:
@@ -43,11 +49,17 @@ if __name__ == '__main__':
                 prob = float(prob)
                 kld += prob * np.log(prob/ref.get(wid))
             tag = tags[int(fname)]
-            res.append((kld, tag, nvec, fname))
+            res.append((kld, tag, nvec, fname, inner_klds[int(fname)]))
 
     res = sorted(res, reverse=True)
-    for kld, tag, nvec, tid in res:
-        args.output_file.write('{0}\t{1}\t{2}\t{3}\n'.format(tid, tag, kld, nvec))
+    for kld, tag, nvec, tid , ikld in res:
+        if ikld > 3:
+            args.output_file.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(tid, tag, kld, ikld, nvec))
+
+    args.output_file.write('\n')
+    for kld, tag, nvec, tid , ikld in res:
+        if ikld <= 3:
+            args.output_file.write('{0}\t{1}\t{2}\t{3}\t{4}\n'.format(tid, tag, kld, ikld, nvec))
 
     args.output_file.close()
 

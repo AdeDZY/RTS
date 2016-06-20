@@ -47,12 +47,13 @@ if __name__ == '__main__':
                 if tid not in avg_vecs:
                     avg_vecs[tid] = {}
                     n_vecs[tid] = 0
-
+                nterms = int(items[1])
                 for t in items[2:]:
                     wid, freq = t.split(':')
                     wid = int(wid)
                     freq = int(freq)
-                    avg_vecs[tid][wid] = avg_vecs[tid].get(wid, 0) + freq
+                    prob = freq/float(nterms) 
+                    avg_vecs[tid][wid] = avg_vecs[tid].get(wid, 0) + prob 
 
                 n_vecs[tid] += 1
 
@@ -61,8 +62,8 @@ if __name__ == '__main__':
     for tid in avg_vecs:
         fout = open(join(args.output_dir, str(tid)), 'w')
         nvec = n_vecs[tid]
-        for wid, freq in avg_vecs[tid].items():
-            fout.write("{0},{1}\n".format(wid, float(freq)/nvec))
+        for wid, prob in avg_vecs[tid].items():
+            fout.write("{0},{1}\n".format(wid, prob/nvec))
         fout.write(str(nvec))
         fout.close()
 
