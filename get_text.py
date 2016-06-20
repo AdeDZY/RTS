@@ -2,6 +2,7 @@
 import argparse
 import json
 import twokenizer
+import random
 
 
 class Tweet:
@@ -78,9 +79,13 @@ if __name__ == '__main__':
     parser.add_argument("tweets_json_file", type=argparse.FileType('r'))
     parser.add_argument("output_text_file", type=argparse.FileType('w'))
     parser.add_argument("output_hashtag_file", type=argparse.FileType('w'))
+    parser.add_argument("sample_rate", type=float)
     args = parser.parse_args()
 
     for line in args.tweets_json_file:
+        r = random.random()
+        if r > args.sample_rate:
+            continue
         tweet = parse_tweet_json(line)
         if not tweet:
             continue
