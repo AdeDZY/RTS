@@ -7,7 +7,7 @@ from os.path import isfile, join
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    #parser.add_argument("tweets_hashtag_dir")
+    parser.add_argument("tweets_hashtag_dir")
     parser.add_argument("output_file", type=argparse.FileType('w'))
     parser.add_argument("threshold", type=int)
     args = parser.parse_args()

@@ -1,7 +1,7 @@
 #!/bos/usr0/zhuyund/bin/python2.7
 import argparse
-from os import listdir
-from os.path import isfile, join
+from os import listdir, makedirs
+from os.path import isfile, join, exists
 import twokenizer
 
 
@@ -38,6 +38,9 @@ if __name__ == '__main__':
         tid, token, tf = line.split('\t')
         tid = int(tid)
         vocab[token] = tid
+
+    if not exists(args.output_dir):
+        makedirs(args.output_dir)
 
     for p in txt_file_paths:
         with open(join(args.tweets_txt_dir, p)) as f, open(join(args.output_dir, p), 'w') as fout, open(join(args.output_dir, p + '.extid'), 'w') as fextid:
