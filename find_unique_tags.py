@@ -15,8 +15,7 @@ if __name__ == '__main__':
     all_tags = {}
     with open(join(args.kld_dir, "all.kld")) as f:
         for line in f:
-            if not line.strip():
-                continue
+            if not line.strip(): break
             tid, tag, okld, ikld, df = line.split('\t')
             okld = float(okld)
             ikld = float(ikld)
@@ -27,10 +26,9 @@ if __name__ == '__main__':
     m_tags = []
     for m in range(1, 13):
         tmp = {}
-        with open(join(args.kld_dir, "all.kld")) as f:
+        with open(join(args.kld_dir, "{0}.kld".format(m))) as f:
             for line in f:
-                if not line.strip():
-                    continue
+                if not line.strip(): break
                 tid, tag, okld, ikld, df = line.split('\t')
                 okld = float(okld)
                 ikld = float(ikld)
@@ -41,10 +39,10 @@ if __name__ == '__main__':
     # for each tag, see whether it is unique to < 3 months
     for tag in all_tags:
         ms = []
-        for m in range(1, 12):
+        for m in range(0, 12):
             if tag in m_tags[m]:
-                ms.append(m)
-        if len(ms) < 3:
+                ms.append(m + 1)
+        if 0 < len(ms) < 3:
             print tag, ms
 
 
