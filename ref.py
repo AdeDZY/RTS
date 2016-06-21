@@ -14,7 +14,7 @@ if __name__ == '__main__':
     dirs = ['output/vectors_{0}s'.format(i) for i in range(1, 13)]
     vec_file_paths = []
     for d in dirs:
-        vec_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f))]
+        vec_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f)) and 'extid' not in f]
 
     ref = {}
     n = 0
