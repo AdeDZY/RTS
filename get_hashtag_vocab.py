@@ -12,14 +12,10 @@ if __name__ == '__main__':
     parser.add_argument("threshold", type=int)
     args = parser.parse_args()
 
-    dirs = ['output/hashtag_{0}s'.format(i) for i in range(1, 13)]
-    tag_file_paths = []
-    for d in dirs:
-        tag_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f))]
-
+    tag_file_paths = [f for f in listdir(args.tweets_hashtag_dir) if isfile(join(args.tweets_hashtag_dir, f))]
     vocab = {}
-    for d, p in tag_file_paths:
-        with open(join(d, p)) as f:
+    for p in tag_file_paths:
+        with open(join(args.tweets_hashtag_dir, p)) as f:
             for line in f:
                 items = line.strip().split('\t')
                 for tag in items[1:]:
@@ -34,6 +30,7 @@ if __name__ == '__main__':
         if tf < args.threshold:
             break
         args.output_file.write("{0}\t{1}\t{2}\n".format(n, tag, tf))
+        #args.output_file.write("{0}\n".format(tag))
         n += 1
 
     args.output_file.close()

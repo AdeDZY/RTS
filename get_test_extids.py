@@ -1,7 +1,7 @@
 #!/bos/usr0/zhuyund/bin/python2.7
 import argparse
-from os import listdir
-from os.path import isfile, join
+from os import listdir, makedirs
+from os.path import isfile, join, exists
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -25,7 +25,8 @@ if __name__ == '__main__':
                 for tag in items[1:]:
                     if tag in tag2extid:
                         tag2extid[tag].append(extid)
-
+    if not exists(args.output_dir):
+        makedirs(args.output_dir)
     for i in range(len(test_tags)):
         with open(join(args.output_dir, str(i)), 'w') as fout:
             for extid in tag2extid[test_tags[i]]:

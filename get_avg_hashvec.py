@@ -8,7 +8,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("tag_extid_dir")
     parser.add_argument("tweet_vector_dir")
-    parser.add_argument("n_test_tags", type=int)
     parser.add_argument("output_dir")
     args = parser.parse_args()
 
