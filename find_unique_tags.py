@@ -37,12 +37,19 @@ if __name__ == '__main__':
         m_tags.append(tmp)
 
     # for each tag, see whether it is unique to < 3 months
+    res = [[] for m in range(0, 12)]
     for tag in all_tags:
         ms = []
         for m in range(0, 12):
             if tag in m_tags[m]:
                 ms.append(m + 1)
         if 0 < len(ms) < 3:
-            print tag, ms
+            res.append((tag, m_tags[m][tag][-1]))
+
+    for m in range(0, 12):
+        print m
+        for tag, df in res:
+            print tag, df
+
 
 
