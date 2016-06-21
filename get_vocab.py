@@ -7,7 +7,7 @@ from os.path import isfile, join
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("tweets_txt_dir")
+    #parser.add_argument("tweets_txt_dir")
     parser.add_argument("output_vocab_file", type=argparse.FileType('w'))
     parser.add_argument("threshold", type=int)
     parser.add_argument("stoplist", type=argparse.FileType('r'))
@@ -17,10 +17,14 @@ if __name__ == '__main__':
     for line in args.stoplist:
         stopwords.add(line.strip())
 
-    txt_file_paths = [f for f in listdir(args.tweets_txt_dir) if isfile(join(args.tweets_txt_dir, f))]
+    dirs = ['output/text_{0}s'.format(i) for i in range(1, 13)]
+    txt_file_paths = []
+    for d in dirs:
+        txt_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f))]
     vocab = {}
-    for p in txt_file_paths:
-        with open(join(args.tweets_txt_dir, p)) as f:
+
+    for d, p in txt_file_paths:
+        with open(join(d, p)) as f:
             for line in f:
                 extid, txt = line.split('\t')
                 txt.replace('\'', ' ')
