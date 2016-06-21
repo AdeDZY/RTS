@@ -7,15 +7,19 @@ from os.path import isfile, join
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("tweets_hashtag_dir")
+    #parser.add_argument("tweets_hashtag_dir")
     parser.add_argument("output_file", type=argparse.FileType('w'))
     parser.add_argument("threshold", type=int)
     args = parser.parse_args()
 
-    tag_file_paths = [f for f in listdir(args.tweets_hashtag_dir) if isfile(join(args.tweets_hashtag_dir, f))]
+    dirs = ['output/hashtag_{0}s'.format(i) for i in range(1, 13)]
+    tag_file_paths = []
+    for d in dirs:
+        tag_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f))]
+
     vocab = {}
-    for p in tag_file_paths:
-        with open(join(args.tweets_hashtag_dir, p)) as f:
+    for d, p in tag_file_paths:
+        with open(join(d, p)) as f:
             for line in f:
                 items = line.strip().split('\t')
                 for tag in items[1:]:
