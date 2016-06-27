@@ -2,7 +2,7 @@
 import string
 import sys, os
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, exists
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -23,6 +23,7 @@ shardMap = [list() for i in range(0, shardNum)]
 for p in extid_file_paths:
 	name = p.replace('.extid', '') 
 	inferFilePath = inferResDir + '/' + name +  '.inference'
+	if not exists(inferFilePath): continue
 	print inferFilePath
 	inferFile = open(inferFilePath, 'r')
 	extidFile = open(args.extidDir + '/' + p)

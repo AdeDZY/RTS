@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
     for i in range(len(dirs)):
         execuatable = "./cat_vector_with_hashtag.py"
-        arguments = "{0} {1} {2}".format(dirs[i], tag_dirs[i], out_dirs[i],
-                                         "hash_vocab_4year", "vocab_4year")
+        arguments = "{0} {1} {2} {3} {4}".format(dirs[i], tag_dirs[i], out_dirs[i],
+                                         "hash_vocab_4year", 200000)
 
         log = "/tmp/zhuyund_kmeans.log"
         out = "tmp/vectors.out"

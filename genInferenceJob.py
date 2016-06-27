@@ -40,9 +40,9 @@ job_file = open('tmp.f', "w")
 
 
 for i in range(len(txt_file_paths)):
-    if i%20 == 0:
+    if i%200 == 0:
         job_file.close()
-        job_file = open(args.job_dir + '/' + str(i/20) + '.job', 'w')
+        job_file = open(args.job_dir + '/' + str(i/200) + '.job', 'w')
     arguments = "{0}/{1}  {2}/centroids/ {2}/inference/{1}.inference {3} {5} 1 1 field {4} ".format(args.dv_dir,
                                                                                 txt_file_paths[i],
                                                                                 args.kmeans_dir,
