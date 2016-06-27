@@ -20,11 +20,11 @@ if __name__ == '__main__':
         vec_dirs += ["output/vectors_{0}{1:02d}s".format(y, i) for i in range(1, 13)]
         avg_dirs += ["output/avgvec/{0}{1:02d}s".format(y, i) for i in range(1, 13)]
         dirs += ["data/{0}{1:02d}s_extid".format(y, i) for i in range(1, 13)]
-        out_files += ["output/tagkld/{0}{1:02d}s.inner_kld".format(y, i) for i in range(1, 13)]
+        out_files += ["output/inner_kld/{0}{1:02d}s.inner_kld".format(y, i) for i in range(1, 13)]
     vec_dirs += ["output/vectors_160{0}s".format(i) for i in range(1, 6)]
     avg_dirs += ["output/avgvec/160{0}s".format(i) for i in range(1, 6)]
     dirs += ["data/160{0}s_extid".format(i) for i in range(1, 6)]
-    out_files += ["output/tagkld/160{0}s.inner_kld".format(i) for i in range(1, 6)]
+    out_files += ["output/inner_kld/160{0}s.inner_kld".format(i) for i in range(1, 6)]
 
     job_file = open("get_innerkld.job", 'w')
 
