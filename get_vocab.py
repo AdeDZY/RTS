@@ -17,7 +17,12 @@ if __name__ == '__main__':
     for line in args.stoplist:
         stopwords.add(line.strip())
 
-    dirs = ['output/text_{0}s'.format(i) for i in range(1, 13)]
+    dirs = []
+    for y in range(12, 16):
+        dirs += ["output/text_{0}{1:02d}s".format(y, i) for i in range(1, 13)]
+    dirs += ["output/text_160{0}s".format(i) for i in range(1, 6)]
+    print dirs
+
     txt_file_paths = []
     for d in dirs:
         txt_file_paths += [(d, f) for f in listdir(d) if isfile(join(d, f))]

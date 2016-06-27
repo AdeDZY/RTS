@@ -20,7 +20,7 @@ if __name__ == '__main__':
             okld = float(okld)
             ikld = float(ikld)
             df = int(df)
-            all_tags[tag] = (okld, ikld, df)
+            all_tags[tag] = (tid, okld, ikld, df)
 
     # read each months tags
     m_tags = []
@@ -33,23 +33,30 @@ if __name__ == '__main__':
                 okld = float(okld)
                 ikld = float(ikld)
                 df = int(df)
-                tmp[tag] = (okld, ikld, df)
+                tmp[tag] = (tid, okld, ikld, df)
         m_tags.append(tmp)
 
     # for each tag, see whether it is unique to < 3 months
     res = [[] for m in range(0, 12)]
+    res2 = []
     for tag in all_tags:
         ms = []
         for m in range(0, 12):
             if tag in m_tags[m]:
-                ms.append(m + 1)
+                ms.append(m)
         if 0 < len(ms) < 3:
-            res.append((tag, m_tags[m][tag][-1]))
+            for m in ms:
+                res[m].append((m_tags[m][tag][-1], tag, m_tags[m][tag][0]))
+        elif len(ms) > 10:
+            res2.append((all_tags[tag][-1], tag, all_tags[tag][0]))
 
     for m in range(0, 12):
-        print m
-        for tag, df in res:
-            print tag, df
+        print m + 1
+        for df, tag, tid in sorted(res[m], reverse=True):
+            print m+1, tid, tag, df
+        print ''
+    for df, tag, tid in sorted(res2, reverse=True):
+        print tid, tag, df
 
 
 

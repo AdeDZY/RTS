@@ -58,7 +58,7 @@ def parse_tweet_json(tweet_line):
     if "created_at" not in objs:  # other actions such as deleting
         return None
 
-    if objs["lang"] != "en": # only deal with english tweets first
+    if objs["user"]["lang"] != "en": # only deal with english tweets first
         return None
 
     text = twokenizer.unicodify(objs["text"])
