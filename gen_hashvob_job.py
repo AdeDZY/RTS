@@ -23,7 +23,7 @@ if __name__ == '__main__':
     job_file = open("get_vectors.job", 'w')
 
     for d, of in zip(dirs, out_files):
-        execuatable = "./get_vectors.py"
+        execuatable = "./get_hashtag_vocab.py"
         arguments = "{0} {1} {2}".format(d, of, 10)
 
         log = "/tmp/zhuyund_kmeans.log"
