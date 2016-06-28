@@ -71,7 +71,7 @@ if __name__ == '__main__':
                     kld += prob * np.log(prob/avg_vecs[tid][wid])
                 inner_klds[tid] = inner_klds.get(tid, 0.0) + kld
 
-    for tid in avg_vecs:
+    for tid in inner_klds:
         nvec = n_vecs[tid]
         args.output_file.write('{0}\t{1}\n'.format(tid, inner_klds[tid]/nvec))
     args.output_file.close()

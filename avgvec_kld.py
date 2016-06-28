@@ -47,9 +47,10 @@ if __name__ == '__main__':
                 wid, prob = line.split(',')
                 wid = int(wid)
                 prob = float(prob)
-                kld += prob * np.log(prob/ref.get(wid))
+                if wid in ref:
+                    kld += prob * np.log(prob/ref.get(wid))
             tag = tags[int(fname)]
-            res.append((kld, tag, nvec, fname, inner_klds[int(fname)]))
+            res.append((kld, tag, nvec, fname, inner_klds.get(int(fname), 0)))
 
     res = sorted(res, reverse=True)
     for kld, tag, nvec, tid , ikld in res:
